@@ -1,0 +1,22 @@
+{% extends 'demo.html' %} {% block crud%} {% if data %}
+<table>
+  <th>Text</th>
+  <th>Number</th>
+  <th>Bool</th>
+  <th>Created</th>
+  <th>Updated</th>
+  <th>Edit</th>
+  <th>Delete</th>
+  {% for thisData in data %}
+  <tr>
+    <td>{{thisData.demoText}}</td>
+    <td>{{thisData.demoNumber}}</td>
+    <td>{{thisData.demoBool}}</td>
+    <td>Created Timestamp</td>
+    <td>Updated Timestamp</td>
+    <td>Edit Button</td>
+    <td>Delete Button</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %} {% endblock %}

@@ -1,4 +1,60 @@
-{% extends 'demopages/update/update.html '%}
-{% block updateOperation%}
+{% extends 'demopages/update/update.html '%} {% block updateOperation%}
 <p>Update Form</p>
+
+<div>
+  <form action="{{url_for('demo.create')}}" method="POST">
+    <input type="hidden" name="_method" value="POST" />
+    <input type="hidden" name="demoDataId" value="{{data.id}}">
+    <div>
+      <label for="demoText">Enter some demo text:</label>
+      <input
+        type="text"
+        name="demoText"
+        id="demoText"
+        value="{{data.demoText}}"
+      />
+    </div>
+    <div>
+      <label for="demoNumber">Enter a number:</label>
+      <input
+        type="number"
+        name="demoNumber"
+        id="demoNumber"
+        value="{{data.demoNumber}}"
+      />
+    </div>
+    <div>
+      <label for="demoBool">Pick a boolean option:</label>
+      <select name="demoBool">
+        <option value="true">True</option>
+        <option value="false">False</option>
+      </select>
+    </div>
+
+    <div>
+      <button type="submit">Submit</button>
+    </div>
+  </form>
+</div>
+
+<script>
+  function setDropdownSelected(selectElement, value) {
+    for (let i = 0; i < selectElement.options.length; i++) {
+      if (selectElement.options[i].value == value) {
+        selectElement.options[i].selected = true;
+        return;
+      }
+    }
+  }
+  function setCheckboxSelected(checkboxElement, value) {
+    if (value == "True") {
+      checkboxElement.checked = "checked";
+    }
+  }
+
+  booleanDropdownElement = document.getElementById("demoBool");
+  booleanValue = "{{data.demoBool}}";
+  setDropdownSelected(booleanDropdownElement, booleanValue);
+</script>
+
 {%endblock%}

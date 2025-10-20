@@ -4,29 +4,12 @@
 <p>This page displays demo data.</p>
 
 <ul>
+  <li><a href="{{url_for('demo.admin')}}">Admin</a></li>
   <li><a href="{{url_for('demo.create')}}">Create</a></li>
   <li><a href="{{url_for('demo.read')}}">Read</a></li>
   <li><a href="{{url_for('demo.update')}}">Update</a></li>
   <li><a href="{{url_for('demo.delete')}}">Delete</a></li>
 </ul>
 
-{% if data %}
-<table>
-<th>Text</th>
-<th>Number</th>
-<th>Bool</th>
-<th>Created</th>
-<th>Updated</th>
-{% for thisData in data %}
-<tr>
-    <td>{{thisData.demoText}}</td>
-    <td>{{thisData.demoNumber}}</td>
-    <td>{{thisData.demoBool}}</td>
-    <td>Created</td>
-    <td>Updated</td>
-</tr>
-{% endfor %}
-</table>
-{% endif %}
 
 {% block crud %}{% endblock %} {% endblock %}
