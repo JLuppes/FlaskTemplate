@@ -14,8 +14,26 @@
     <td>{{thisData.demoBool}}</td>
     <td>Created Timestamp</td>
     <td>Updated Timestamp</td>
-    <td>Edit Button</td>
-    <td>Delete Button</td>
+    <td>
+      <div>
+        <a href="{{url_for('demo.update')}}?dataId={{thisData.id}}">
+          <button type="submit">Edit</button>
+        </a>
+      </div>
+    </td>
+    <td>
+      <div>
+        <form action="{{url_for('demo.delete')}}" method="POST">
+          <input
+            type="hidden"
+            name="dataId"
+            id="dataId#{{thisData.id}}"
+            value="{{thisData.id}}"
+          />
+          <button type="submit">Delete</button>
+        </form>
+      </div>
+    </td>
   </tr>
   {% endfor %}
 </table>

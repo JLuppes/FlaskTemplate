@@ -34,13 +34,13 @@ def demoObject():
 
                 return render_template('demoPages/create/createSuccess.html', demoData=freshDemoData)
             elif _method == 'PUT':
-                formDataId = request.form.get("demoId", '').strip()
+                formDataId = request.form.get("demoDataId", '').strip()
 
                 if not formDataId:
                     errorMsg = "No data id provided."
-                    return render_template('demoPages/update/updateForm.html', error=errorMsg)
+                    return render_template('demoPages/admin.html', error=errorMsg)
 
-                dataToEdit = DemoData.query.filter_by(id=formDataId)
+                dataToEdit = DemoData.query.filter_by(id=formDataId).first()
 
                 if not dataToEdit:
                     errorMsg = f"No data found with id = {formDataId}"
@@ -53,7 +53,7 @@ def demoObject():
                     dataToEdit.updated = datetime.now(timezone.utc)
                     db.session.commit()
                     flash(f"Successfully updated data with id: {formDataId}")
-                    redirect(url_for('update'))
+                    redirect(url_for('demo.update'))
                 except Exception as e:
                     db.session.rollback()
                     errorMsg = f"Error updating db entry with id = {formDataId}"
@@ -87,11 +87,12 @@ def update():
         return render_template("demo.html", error=errorMsg)
 
     dataToEdit = DemoData.query.filter_by(id=dataId).first()
+
     if not dataToEdit:
         errorMsg = f"No data found with id = {dataId}"
-        return render_template("demopages/demo.html", error=errorMsg)
+        return render_template("demopages/admin.html", error=errorMsg)
 
-    return render_template('demoPages/update/updateForm.html', data=dataToEdit)
+    return render_template('demoPages/update/updateForm.html', dataToEdit=dataToEdit)
 
 
 @demo.route('/demo/delete')
