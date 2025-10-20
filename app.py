@@ -16,6 +16,8 @@ config = {
 app = Flask(__name__)
 app.config.from_object(Config)
 
+app.secret_key = os.getenv('SECRET_KEY', 'default_secret_key')
+
 # Initializes the app
 db.init_app(app)
 

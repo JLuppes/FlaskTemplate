@@ -1,22 +1,21 @@
 {% extends 'demoPages/create/create.html '%} {% block createOperation %}
 
-
-
 <h2>Create Form</h2>
 
 <div>
   <form action="{{url_for('demo.create')}}" method="POST">
+    <input type="hidden" name="_method" value="POST" />
     <div>
       <label for="demoText">Enter some demo text:</label>
-      <input type="text" name="demoText" id="demoText"/>
+      <input type="text" name="demoText" id="demoText" />
     </div>
     <div>
       <label for="demoNumber">Enter a number:</label>
-      <input type="number" name="demoNumber" id="demoNumber"/>
+      <input type="number" name="demoNumber" id="demoNumber" />
     </div>
     <div>
       <label for="demoBool">Pick a boolean option:</label>
-      <select name="demoBool" >
+      <select name="demoBool">
         <option value="true">True</option>
         <option value="false">False</option>
       </select>
