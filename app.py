@@ -2,6 +2,7 @@ from flask import Flask
 from config import Config
 from models import db
 from controllers import main
+from demo import demo
 from dotenv import dotenv_values
 import os
 
@@ -22,8 +23,8 @@ with app.app_context():
     db.create_all()
     print("Database created at:", app.config['SQLALCHEMY_DATABASE_URI'])
 
-
 app.register_blueprint(main)
+app.register_blueprint(demo)
 
 if __name__ == '__main__':
     app.run(debug=True)

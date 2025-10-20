@@ -1,0 +1,16 @@
+{% extends 'base.html'%}
+
+{% block content %}
+<h1>Demo Data</h1>
+
+<p>This page displays demo data.</p>
+
+<ul>
+<li><a href="{{url_for('demo.create')}}">Create</a></li>
+<li><a href="{{url_for('demo.read')}}">Read</a></li>
+<li><a href="{{url_for('demo.update')}}">Update</a></li>
+<li><a href="{{url_for('demo.delete')}}">Delete</a></li>
+</ul>
+
+{% block crud %}{% endblock %}
+{% endblock %}
