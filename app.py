@@ -6,9 +6,7 @@ from demo import demo
 from dotenv import dotenv_values
 import os
 from flask_bootstrap import Bootstrap5
-from flask_wtf import FlaskForm, CSRFProtect
-from wtforms.validators import DataRequired, Length, Regexp
-from wtforms.fields import *
+from flask_wtf import CSRFProtect
 
 config = {
     **dotenv_values(".env"),  # load general variables
@@ -34,6 +32,7 @@ app.config['BOOTSTRAP_TABLE_VIEW_TITLE'] = 'Read'
 app.config['BOOTSTRAP_TABLE_EDIT_TITLE'] = 'Update'
 app.config['BOOTSTRAP_TABLE_DELETE_TITLE'] = 'Remove'
 app.config['BOOTSTRAP_TABLE_NEW_TITLE'] = 'Create'
+app.config['BOOTSTRAP_BOOTSWATCH_THEME'] = 'morph'
 
 bootstrap = Bootstrap5(app)
 

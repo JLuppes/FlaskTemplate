@@ -10,6 +10,7 @@ demo = Blueprint('demo', __name__)
 
 
 class DemoForm(FlaskForm):
+    dataId = HiddenField()
     demoText = StringField(
         'Demo Text', description="This is a text field", validators=[Length(0, 100)])
     demoNumber = IntegerField(
@@ -28,26 +29,7 @@ def demoObject():
             formDemoNumber = request.form.get("demoNumber", '').strip()
             formDemoBool = request.form.get("demoBool", '').strip() == "true"
 
-            if _method == 'POST':
-
-                try:
-                    newDemoData = DemoData(
-                        demoText=formDemoText,
-                        demoNumber=formDemoNumber,
-                        demoBool=formDemoBool
-                    )
-                    db.session.add(newDemoData)
-                    db.session.commit()
-                except Exception as e:
-                    db.session.rollback()
-                    errorMsg = f"Error during database operation: {str(e)}"
-                    return render_template('demoPages/create/createForm.html', error=errorMsg)
-
-                freshDemoData = DemoData.query.filter(
-                    DemoData.demoText == formDemoText, DemoData.demoNumber == formDemoNumber, DemoData.demoBool == formDemoBool).first()
-
-                return render_template('demoPages/create/createSuccess.html', demoData=freshDemoData)
-            elif _method == 'PUT':
+            if _method == 'PUT':
                 formDataId = request.form.get("demoDataId", '').strip()
 
                 if not formDataId:
@@ -87,15 +69,9 @@ def create():
     form = DemoForm()
     if form.validate_on_submit():
         flash('Form validated!')
-
-        # if request.method == 'POST':
-        # _method = request.form.get("_method", 'POST').strip().upper()
-        # if _method == 'POST' or _method == 'PUT':
         formDemoText = request.form.get("demoText", '').strip()
         formDemoNumber = request.form.get("demoNumber", '').strip()
-        formDemoBool = request.form.get("demoBool", '').strip() == "true"
-
-        # if _method == 'POST':
+        formDemoBool = request.form.get("demoBool", '') == "y"
 
         try:
             newDemoData = DemoData(
@@ -123,9 +99,11 @@ def read():
     return render_template('demoPages/read/read.html')
 
 
-@demo.route('/demo/update')
+@demo.route('/demo/update', methods=['GET', 'POST'])
 def update():
-    dataId = request.args.get("dataId", '').strip()
+    form = DemoForm()
+
+    dataId = request.args.get("dataId")
 
     if not dataId:
         errorMsg = "No data id provided!"
@@ -137,7 +115,31 @@ def update():
         errorMsg = f"No data found with id = {dataId}"
         return render_template("demopages/admin.html", error=errorMsg)
 
-    return render_template('demoPages/update/updateForm.html', dataToEdit=dataToEdit)
+    if form.validate_on_submit():
+
+        try:
+            dataToEdit.demoText = form.demoText.data
+            dataToEdit.demoNumber = form.demoNumber.data
+            dataToEdit.demoBool = form.demoBool.data
+            dataToEdit.updated = datetime.now(timezone.utc)
+            db.session.commit()
+            # flash(f"Successfully updated data with id: {dataId}")
+            redirect(url_for('demo.admin'))
+        except Exception as e:
+            db.session.rollback()
+            errorMsg = f"Error updating db entry with id = {dataId}. Error = {str(e)}"
+            form.dataId.data = dataId
+            form.demoText.data = dataToEdit.demoText
+            form.demoNumber.data = dataToEdit.demoNumber
+            form.demoBool.data = dataToEdit.demoBool
+            return render_template('demoPages/update/updateForm.html', error=errorMsg, form=form)
+
+    form.dataId.data = dataId
+    form.demoText.data = dataToEdit.demoText
+    form.demoNumber.data = dataToEdit.demoNumber
+    form.demoBool.data = dataToEdit.demoBool
+
+    return render_template('demoPages/update/updateForm.html', form=form)
 
 
 @demo.route('/demo/delete', methods=['GET', 'POST', 'DELETE'])

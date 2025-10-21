@@ -32,7 +32,9 @@
   </form>
 </div> #}
 
-
+{% if form %}
     {{ render_form(form) }}
+    {% else %}<p>No form!</p>    
+{% endif %}
 
 {% endblock %}

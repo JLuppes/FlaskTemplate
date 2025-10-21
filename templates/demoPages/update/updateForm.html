@@ -1,7 +1,11 @@
 {% extends 'demopages/update/update.html '%} {% block updateOperation%}
 <p>Update Form</p>
 
-<div>
+{% from 'bootstrap5/form.html' import render_form %}
+
+{{ render_form(form) }}
+
+{# <div>
   <form action="{{url_for('demo.demoObject')}}" method="POST">
     <input type="hidden" name="_method" value="PUT" />
     <input type="hidden" name="demoDataId" value="{{dataToEdit.id}}" />
@@ -35,9 +39,9 @@
       <button type="submit">Submit</button>
     </div>
   </form>
-</div>
+</div> #}
 
-<script>
+{# <script>
   function setDropdownSelected(selectElement, value) {
     for (let i = 0; i < selectElement.options.length; i++) {
       if (selectElement.options[i].value == value) {
@@ -55,6 +59,6 @@
   booleanDropdownElement = document.getElementById("demoBool");
   booleanValue = "{{dataToEdit.demoBool}}";
   setDropdownSelected(booleanDropdownElement, booleanValue);
-</script>
+</script> #}
 
 {%endblock%}
