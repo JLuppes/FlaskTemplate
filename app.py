@@ -5,6 +5,7 @@ from controllers import main
 from demo import demo
 from dotenv import dotenv_values
 import os
+from flask_bootstrap import Bootstrap5
 
 config = {
     **dotenv_values(".env"),  # load general variables
@@ -15,6 +16,8 @@ config = {
 
 app = Flask(__name__)
 app.config.from_object(Config)
+
+bootstrap = Bootstrap5(app)
 
 app.secret_key = os.getenv('SECRET_KEY', 'default_secret_key')
 
