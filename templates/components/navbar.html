@@ -1,3 +1,5 @@
+{% from 'bootstrap5/nav.html' import render_nav_item %}
+
 <div class="px-3 py-2 text-bg-dark border-bottom">
   <div class="container">
     <div
@@ -8,26 +10,11 @@
         class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none"
         id="navbar-logo"
       >
-        <img
-          id="logo_svg"
-          src="{{url_for('static', filename='logo.svg')}}"
-        />
+        <img id="logo_svg" src="{{url_for('static', filename='logo.svg')}}" />
       </a>
-      <ul
-        class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small"
-      >
-        <li>
-          <a href="{{url_for('main.index')}}" class="nav-link text-secondary">
-            Home
-          </a>
-        </li>
-        <li>
-          <a href="{{url_for('demo.demoObject')}}" class="nav-link text-white">
-            CRUD Demo
-          </a>
-        </li>
 
-      </ul>
+      {{ render_nav_item('main.index', 'Home') }} {{
+      render_nav_item('demo.demoObject', 'Demo') }}
     </div>
   </div>
 </div>
