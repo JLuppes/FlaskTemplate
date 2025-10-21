@@ -20,48 +20,26 @@ class DemoForm(FlaskForm):
     submit = SubmitField()
 
 
-@demo.route('/demo', methods=['GET', 'POST'])
+@demo.route('/demo')
 def demoObject():
-    if request.method == 'POST':
-        _method = request.form.get("_method", 'POST').strip().upper()
-        if _method == 'POST' or _method == 'PUT':
-            formDemoText = request.form.get("demoText", '').strip()
-            formDemoNumber = request.form.get("demoNumber", '').strip()
-            formDemoBool = request.form.get("demoBool", '').strip() == "true"
-
-            if _method == 'PUT':
-                formDataId = request.form.get("demoDataId", '').strip()
-
-                if not formDataId:
-                    errorMsg = "No data id provided."
-                    return render_template('demoPages/admin.html', error=errorMsg)
-
-                dataToEdit = DemoData.query.filter_by(id=formDataId).first()
-
-                if not dataToEdit:
-                    errorMsg = f"No data found with id = {formDataId}"
-                    return render_template('demoPages/update/updateForm.html', error=errorMsg)
-
-                try:
-                    dataToEdit.demoText = formDemoText
-                    dataToEdit.demoNumber = formDemoNumber
-                    dataToEdit.demoBool = formDemoBool
-                    dataToEdit.updated = datetime.now(timezone.utc)
-                    db.session.commit()
-                    flash(f"Successfully updated data with id: {formDataId}")
-                    redirect(url_for('demo.update'))
-                except Exception as e:
-                    db.session.rollback()
-                    errorMsg = f"Error updating db entry with id = {formDataId}"
-                    return render_template('demoPages/update/updateForm.html', error=errorMsg)
 
     return render_template('demo.html')
 
 
 @demo.route('/demo/admin')
 def admin():
+
     allData = DemoData.query.all()
-    return render_template('demoPages/admin.html', data=allData)
+
+    titles = [('id', '#'), ('demoText', 'Text'), ('demoNumber', 'Number'), ('demoBool',
+                                                                            'Boolean'), ('created', 'Created'), ('updated', 'Updated'), ('deleted', 'Deleted')]
+
+    data = []
+    for thisData in allData:
+        data.append({'id': thisData.id, 'demoText': thisData.demoText, 'demoNumber': thisData.demoNumber,
+                    'demoBool': thisData.demoBool, 'created': thisData.created, 'updated': thisData.updated, 'deleted': thisData.deleted})
+
+    return render_template('demoPages/admin.html', DemoData=DemoData, data=data, titles=titles)
 
 
 @demo.route('/demo/create', methods=['GET', 'POST'])
@@ -149,8 +127,10 @@ def delete():
         dataId = request.form.get("dataId", '').strip()
 
         if not dataId:
-            errorMsg = "No data id provided!"
-            return render_template("demo.html", error=errorMsg)
+            dataId = request.args.get("dataId", '')
+            if not dataId:
+                errorMsg = "No data id provided!"
+                return render_template("demo.html", error=errorMsg)
 
         dataToDelete = DemoData.query.filter_by(id=dataId).first()
 
@@ -162,6 +142,8 @@ def delete():
             oldState = dataToDelete.deleted
             dataToDelete.deleted = not oldState
             db.session.commit()
+            flash(
+                f"Set 'deleted' for data with id = {dataId} to {dataToDelete.deleted}")
             return redirect(url_for('demo.admin'))
         except Exception as e:
             db.session.rollback()

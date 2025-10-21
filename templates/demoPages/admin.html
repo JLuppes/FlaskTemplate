@@ -1,47 +1,7 @@
 {% extends 'demo.html' %} 
 {% block crud %} 
   {% if data %}
-    <table>
-      <th>ID</th>
-      <th>Text</th>
-      <th>Number</th>
-      <th>Bool</th>
-      <th>Created</th>
-      <th>Updated</th>
-      <th>Deleted</th>
-      <th>Edit</th>
-      <th>Delete</th>
-      {% for thisData in data %}
-      <tr>
-        <td>{{thisData.id}}</td>
-        <td>{{thisData.demoText}}</td>
-        <td>{{thisData.demoNumber}}</td>
-        <td>{{thisData.demoBool}}</td>
-        <td>{{thisData.created}}</td>
-        <td>{{thisData.updated}}</td>
-        <td>{{thisData.deleted}}</td>
-        <td>
-          <div>
-            <a href="{{url_for('demo.update')}}?dataId={{thisData.id}}">
-              <button type="submit">Edit</button>
-            </a>
-          </div>
-        </td>
-        <td>
-          <div>
-            <form action="{{url_for('demo.delete')}}" method="POST">
-              <input
-                type="hidden"
-                name="dataId"
-                id="dataId"
-                value="{{thisData.id}}"
-              />
-              <button type="submit">Delete</button>
-            </form>
-          </div>
-        </td>
-      </tr>
-      {% endfor %}
-    </table>
+    {% from 'bootstrap5/table.html' import render_table %} 
+    {{ render_table(data, titles, show_actions=True, model=DemoData, edit_url=('demo.update', [('dataId', ':id')]),delete_url=('demo.delete', [('dataId', ':id')])) }} 
   {% endif %} 
 {% endblock %}
