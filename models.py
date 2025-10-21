@@ -15,3 +15,4 @@ class DemoData(db.Model):
     demoBool = db.Column(db.Boolean)
     created = db.Column(db.DateTime, default=datetime.now(timezone.utc))
     updated = db.Column(db.DateTime, default=datetime.now(timezone.utc))
+    deleted = db.Column(db.Boolean, default=False)

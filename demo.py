@@ -95,6 +95,30 @@ def update():
     return render_template('demoPages/update/updateForm.html', dataToEdit=dataToEdit)
 
 
-@demo.route('/demo/delete')
+@demo.route('/demo/delete', methods=['GET', 'POST', 'DELETE'])
 def delete():
-    return render_template('demoPages/delete/delete.html')
+    if request.method == 'POST' or request.method == 'DELETE':
+
+        dataId = request.form.get("dataId", '').strip()
+
+        if not dataId:
+            errorMsg = "No data id provided!"
+            return render_template("demo.html", error=errorMsg)
+
+        dataToDelete = DemoData.query.filter_by(id=dataId).first()
+
+        if not dataToDelete:
+            errorMsg = f"No data found with id = {dataId}"
+            return render_template("demopages/admin.html", error=errorMsg)
+
+        try:
+            oldState = dataToDelete.deleted
+            dataToDelete.deleted = not oldState
+            db.session.commit()
+            return redirect(url_for('demo.admin'))
+        except Exception as e:
+            db.session.rollback()
+            errorMsg = f"Error deleting db entry with id = {dataId}"
+            return render_template('demoPages/admin.html', error=errorMsg)
+
+    return render_template('demoPages/admin.html')
