@@ -123,8 +123,8 @@ def update():
             dataToEdit.demoBool = form.demoBool.data
             dataToEdit.updated = datetime.now(timezone.utc)
             db.session.commit()
-            # flash(f"Successfully updated data with id: {dataId}")
-            redirect(url_for('demo.admin'))
+            flash(f"Successfully updated data with id: {dataId}")
+            return redirect(url_for('demo.admin'))
         except Exception as e:
             db.session.rollback()
             errorMsg = f"Error updating db entry with id = {dataId}. Error = {str(e)}"
