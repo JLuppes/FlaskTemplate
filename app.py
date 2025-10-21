@@ -6,6 +6,9 @@ from demo import demo
 from dotenv import dotenv_values
 import os
 from flask_bootstrap import Bootstrap5
+from flask_wtf import FlaskForm, CSRFProtect
+from wtforms.validators import DataRequired, Length, Regexp
+from wtforms.fields import *
 
 config = {
     **dotenv_values(".env"),  # load general variables
@@ -15,7 +18,22 @@ config = {
 }
 
 app = Flask(__name__)
+csrf = CSRFProtect(app)
+
 app.config.from_object(Config)
+
+# serve locally for faster and offline development
+app.config['BOOTSTRAP_SERVE_LOCAL'] = True
+
+# set default button sytle and size, will be overwritten by macro parameters
+app.config['BOOTSTRAP_BTN_STYLE'] = 'primary'
+app.config['BOOTSTRAP_BTN_SIZE'] = 'sm'
+
+# set default icon title of table actions
+app.config['BOOTSTRAP_TABLE_VIEW_TITLE'] = 'Read'
+app.config['BOOTSTRAP_TABLE_EDIT_TITLE'] = 'Update'
+app.config['BOOTSTRAP_TABLE_DELETE_TITLE'] = 'Remove'
+app.config['BOOTSTRAP_TABLE_NEW_TITLE'] = 'Create'
 
 bootstrap = Bootstrap5(app)
 

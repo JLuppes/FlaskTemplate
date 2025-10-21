@@ -1,13 +1,13 @@
 {% extends 'demoPages/create/create.html '%} {% block createOperation %}
 
 
-{# {% from 'bootstrap5/form.html' import render_form %}
+{% from 'bootstrap5/form.html' import render_form %}
 
-{{ render_form(form) }} #}
+{# {{ render_form(form) }} #}
 
 <h2>Create Form</h2>
 
-<div>
+{# <div>
   <form action="{{url_for('demo.demoObject')}}" method="POST">
     <input type="hidden" name="_method" value="POST" />
     <div>
@@ -30,6 +30,9 @@
       <button type="submit">Submit</button>
     </div>
   </form>
-</div>
+</div> #}
+
+
+    {{ render_form(form) }}
 
 {% endblock %}
