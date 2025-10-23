@@ -1,35 +1,10 @@
-{% extends 'demoPages/create/create.html '%} {% block createOperation %}
+{% extends 'demoPages/create/create.html '%} 
+{% block createOperation %} 
+  {% from 'bootstrap5/form.html' import render_form %}
 
+  <h2>Create Form</h2>
 
-{# {% from 'bootstrap5/form.html' import render_form %}
-
-{{ render_form(form) }} #}
-
-<h2>Create Form</h2>
-
-<div>
-  <form action="{{url_for('demo.demoObject')}}" method="POST">
-    <input type="hidden" name="_method" value="POST" />
-    <div>
-      <label for="demoText">Enter some demo text:</label>
-      <input type="text" name="demoText" id="demoText" />
-    </div>
-    <div>
-      <label for="demoNumber">Enter a number:</label>
-      <input type="number" name="demoNumber" id="demoNumber" />
-    </div>
-    <div>
-      <label for="demoBool">Pick a boolean option:</label>
-      <select name="demoBool">
-        <option value="true">True</option>
-        <option value="false">False</option>
-      </select>
-    </div>
-
-    <div>
-      <button type="submit">Submit</button>
-    </div>
-  </form>
-</div>
-
+  {% if form %} {{ render_form(form) }} {% else %}
+  <p>No form!</p>
+  {% endif %} 
 {% endblock %}
