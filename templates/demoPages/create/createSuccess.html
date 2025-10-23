@@ -1,16 +1,20 @@
-{% extends 'demoPages/create/create.html '%}
-
+{% extends 'demoPages/create/create.html '%} 
+{% block title%}{{super()}} - Success{% endblock %}
 {% block createOperation %}
 <p>Create success</p>
+<ul>
+    <li>
+        <h3>Demo Text:</h3>
+        <p>{{demoData.demoText}}</p>
+    </li>
+    <li>
+        <h3>Demo Number:</h3>
+        <p>{{demoData.demoNumber}}</p>
+    </li>
 
-<h3>Demo Text:</h3>
-<p>{{demoData.demoText}}</p>
-
-<h3>Demo Number:</h3>
-<p>{{demoData.demoNumber}}</p>
-
-<h3>Demo Boolean:</h3>
-<p>{{demoData.demoBool}}</p>
-
-
+    <li>
+        <h3>Demo Boolean:</h3>
+        <p>{{demoData.demoBool}}</p>
+    </li>
+</ul>
 {% endblock %}
