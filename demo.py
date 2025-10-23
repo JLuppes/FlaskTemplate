@@ -21,8 +21,7 @@ class DemoForm(FlaskForm):
 
 
 @demo.route('/demo')
-def demoObject():
-
+def demoHome():
     return render_template('demo.html')
 
 
@@ -38,7 +37,6 @@ def admin():
     for thisData in allData:
         data.append({'id': thisData.id, 'demoText': thisData.demoText, 'demoNumber': thisData.demoNumber,
                     'demoBool': thisData.demoBool, 'created': thisData.created, 'updated': thisData.updated, 'deleted': thisData.deleted})
-
     return render_template('demoPages/admin.html', DemoData=DemoData, data=data, titles=titles)
 
 
@@ -70,11 +68,6 @@ def create():
         return render_template('demoPages/create/createSuccess.html', demoData=freshDemoData)
 
     return render_template('demoPages/create/createForm.html', form=form)
-
-
-@demo.route('/demo/read')
-def read():
-    return render_template('demoPages/read/read.html')
 
 
 @demo.route('/demo/update', methods=['GET', 'POST'])
